@@ -2,32 +2,32 @@ specVersion: 0.0.2
 description: Uniswap is a decentralized protocol for automated token exchange on Ethereum.
 repository: https://github.com/Uniswap/uniswap-v2-subgraph
 schema:
-  file: ./schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: ethereum/contract
     name: Factory
     network: mainnet
     source:
-      address: '0xCDfc25aF751e88Bf7aB0ec1937B1B27b907C975A'
+      address: "0xCDfc25aF751e88Bf7aB0ec1937B1B27b907C975A"
       abi: Factory
       startBlock: 1000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
       language: wasm/assemblyscript
-      file: ./src/mappings/factory.ts
+      file: Factory/Factory.wasm
       entities:
         - Pair
         - Token
       abis:
         - name: Factory
-          file: ./abis/factory.json
+          file: Factory/abis/factory.json
         - name: ERC20
-          file: ./abis/ERC20.json
+          file: Factory/abis/ERC20.json
         - name: ERC20SymbolBytes
-          file: ./abis/ERC20SymbolBytes.json
+          file: Factory/abis/ERC20SymbolBytes.json
         - name: ERC20NameBytes
-          file: ./abis/ERC20NameBytes.json
+          file: Factory/abis/ERC20NameBytes.json
       eventHandlers:
         - event: PairCreated(indexed address,indexed address,address,uint256)
           handler: handleNewPair
@@ -41,15 +41,15 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.3
       language: wasm/assemblyscript
-      file: ./src/mappings/core.ts
+      file: templates/Pair/Pair.wasm
       entities:
         - Pair
         - Token
       abis:
         - name: Pair
-          file: ./abis/pair.json
+          file: Pair/abis/pair.json
         - name: Factory
-          file: ./abis/factory.json
+          file: Pair/abis/factory.json
       eventHandlers:
         - event: Mint(indexed address,uint256,uint256)
           handler: handleMint
